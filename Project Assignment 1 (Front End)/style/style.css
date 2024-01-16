@@ -1,0 +1,26 @@
+.btn{
+    color:white;
+}
+.fixed-size {
+    width: auto;
+    height: auto;
+}
+
+.container-sm {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.features {
+    margin-top: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+@media (min-width: 513px) {
+    .fixed-size {
+        max-width: 500px;
+        width: 100%;
+    }
+}
