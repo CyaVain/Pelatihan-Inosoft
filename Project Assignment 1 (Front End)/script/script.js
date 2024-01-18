@@ -1,5 +1,20 @@
 let history = '';
 
+    document.getElementById('inputArea').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            jumlah();
+        }
+    });
+
+    function load() {
+        displayClear();
+        var checkbox = document.getElementById('flexSwitchCheckDefault');
+        if (checkbox) {
+            checkbox.checked = false;
+        }
+    }
+
+
     function toggleMode() {
         let checkbox = document.getElementById("flexSwitchCheckDefault");
         let label = document.querySelector('.form-check-label');
@@ -103,6 +118,9 @@ let history = '';
 
     function tambah() {
         let a = document.getElementById('inputArea').value;
+        if (a.trim() === '') {
+            a = '0';
+        }
         let historyElement = document.getElementById('historyArea');
         history += a + "+";
         historyElement.value = history;
@@ -113,16 +131,21 @@ let history = '';
 
     function kurang() {
         let a = document.getElementById('inputArea').value;
-        let historyElement = document.getElementById('historyArea');
-        history += a + "-";
-        historyElement.value = history;
-        document.getElementById('inputArea').value = 0;
-        
+        if (a.trim() === '') {
+            a = '0';
+        }
+            let historyElement = document.getElementById('historyArea');
+            history += a + "-";
+            historyElement.value = history;
+            document.getElementById('inputArea').value = 0;
         displayClear();
     }
 
     function bagi() {
         let a = document.getElementById('inputArea').value;
+        if (a.trim() === '') {
+            a = '0';
+        }
         let historyElement = document.getElementById('historyArea');
         history += a + "÷";
         historyElement.value = history;
@@ -133,11 +156,55 @@ let history = '';
     
     function kali() {
         let a = document.getElementById('inputArea').value;
+        if (a.trim() === '') {
+            a = '0';
+        }
         let historyElement = document.getElementById('historyArea');
         history += a + "x";
         historyElement.value = history;
         document.getElementById('inputArea').value = 0;
         
+        displayClear();
+    }
+
+    function konversi(){
+        let a = document.getElementById('inputArea').value;
+        if(a !== 0){
+            let b = a;
+            let c = b;
+            let output = (a - b) - c ; 
+            document.getElementById('inputArea').value = output;
+        }else{
+            a=0;
+        }
+
+        displayClear();
+    }
+
+    function desimal(){
+        let inputArea = document.getElementById('inputArea');
+        let inputValue = inputArea.value;
+        if(inputValue === '' ){
+            inputValue = 0;
+        }
+        if(inputValue === 0 ){
+                inputArea.value = 0 + '.';
+
+        }
+            if (!inputValue.includes('.')) {
+                inputArea.value = inputValue + '.';
+            }
+        displayClear();
+    }
+
+    function persentase(){
+        let a = document.getElementById('inputArea').value;
+        if (a.trim() === '') {
+            a = '0';
+        }
+        let output = parseFloat(a /100);
+        document.getElementById('inputArea').value = output;
+
         displayClear();
     }
 
@@ -159,11 +226,14 @@ let history = '';
             case 'x':
                 result = parseFloat(history) * input;
                 break;
+            case '/':
+                result = parseFloat(history) / input;
+                break;
             case '÷':
                 result = parseFloat(history) / input;
             break;
             default:
-                alert('Operator tidak valid');
+                alert('Mohon Tambahkan Operasi Matematika');
                 return;
         }
 
@@ -174,6 +244,89 @@ let history = '';
 
         displayClear();
     }
+
+    function restrictInput(event) {
+        let allowedCharacters = /^[0-9+%\.\-x\/]*$/;
+        let inputValue = event.target.value;
+    
+        if (!allowedCharacters.test(inputValue)) {
+            event.target.value = inputValue.slice(0, -1);
+        }
+    }
+    
+    function handleOperation(operator) {
+        let inputArea = document.getElementById('inputArea');
+        let inputValue = inputArea.value;
+    
+        if (inputValue.trim() !== '') {
+            let a = parseFloat(inputValue);
+    
+            history += a + operator;
+            document.getElementById('historyArea').value = history;
+    
+            inputArea.value = '0';
+        }
+    }
+    
+    document.getElementById('inputArea').addEventListener('input', restrictInput);
+
+    document.getElementById('inputArea').addEventListener('input', function(event) {
+        let inputArea = event.target;
+        let inputValue = inputArea.value;
+        let historyElement = document.getElementById('historyArea');
+    
+        if (inputValue.endsWith('+')) {
+            let a = inputValue.slice(0, -1);
+            if(a === ''){
+                a = 0;
+            }
+            history += a + "+";
+            historyElement.value = history;
+            document.getElementById('inputArea').value = '';
+        }
+        if (inputValue.endsWith('-')) {
+            let a = inputValue.slice(0, -1);
+            if(a === ''){
+                a = 0;
+            }
+            history += a + "-";
+            historyElement.value = history;
+            document.getElementById('inputArea').value = '';
+        }
+        if (inputValue.endsWith('x')) {
+            let a = inputValue.slice(0, -1);
+            if(a === ''){
+                a = 0;
+            }
+            history += a + "x";
+            historyElement.value = history;
+            document.getElementById('inputArea').value = '';
+        }
+        if (inputValue.endsWith('/')) {
+            let a = inputValue.slice(0, -1);
+            if(a === ''){
+                a = 0;
+            }
+            history += a + "/";
+            historyElement.value = history;
+            document.getElementById('inputArea').value = '';
+        }
+        if (inputValue.endsWith('%')) {
+            let a = inputValue.slice(0, -1);
+            if (a.trim() === '') {
+                a = '0';
+            }
+            let output = parseFloat(a /100);
+            document.getElementById('inputArea').value = output;
+        }
+        displayClear();
+    });
+
+    
+    
+
+
+    
 
     
     
